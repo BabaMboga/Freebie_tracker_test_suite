@@ -42,7 +42,10 @@ def sample_devs(db_session):
 def sample_freebies(db_session, sample_companies, sample_devs):
     """Create sample freebies"""
     freebie1 = Freebie(iten_name="T-shirt", value=25, dev=sample_devs["hildah"], company=sample_companies["google"])
-    freebie2 = Freebie(iten_name="T-shirt", value=25, dev=sample_devs["hildah"], company=sample_companies["google"])
-    freebie3 = Freebie(iten_name="T-shirt", value=25, dev=sample_devs["hildah"], company=sample_companies["google"])
-    freebie4 = Freebie(iten_name="T-shirt", value=25, dev=sample_devs["hildah"], company=sample_companies["google"])
+    freebie2 = Freebie(iten_name="Stickers", value=5, dev=sample_devs["hildah"], company=sample_companies["google"])
+    freebie3 = Freebie(iten_name="Mug", value=15, dev=sample_devs["ayim"], company=sample_companies["facebook"])
+    freebie4 = Freebie(iten_name="T-shirt", value=30, dev=sample_devs["koba"], company=sample_companies["apple"])
+    db_session.add_all([freebie1, freebie2, freebie3, freebie4])
+    db_session.commit()
+    return{"hildah_tshirt": freebie1, "hildah_stickers": freebie2, "ayim_mug": freebie3, "koba_tshirt": freebie4}
     
