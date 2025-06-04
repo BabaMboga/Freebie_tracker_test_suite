@@ -17,4 +17,21 @@ def db_session():
     yield session
     session.close()
 
-    
+@pytest.fixture
+def sample_devs(db_sesion):
+    """create sample devs for testing based on given code challenge"""
+    hildah = Dev(name="Hildah")
+    ayim = Dev(name="Ayim")
+    koba = Dev(name="Koba")
+    db_session.add_all([hildah, ayim, koba])
+    db_session.commit()
+    return {"hildah": hildah, "ayim":ayim, "koba":koba}
+
+
+@pytest.fixture
+def sample_freebies(db_session, sample_companies, sample_devs):
+    """Create sample freebies"""
+    freebie1 = 
+    freebie2 = 
+    freebie3 =
+    freebie4 = 
