@@ -18,7 +18,17 @@ def db_session():
     session.close()
 
 @pytest.fixture
-def sample_devs(db_sesion):
+def sample_companies(db_session):
+    """Sample companies for testing"""
+    google = Company(name="Google", founding_year=1998)
+    facebook = Company(name="Facebook", founding_year=2004)
+    apple = Company(name="Apple", founding_year=1976)
+    db_session.add_all([google, facebook, apple])
+    db_session.commit()
+    return {"google": google, "facebook": facebook, "apple": apple}
+
+@pytest.fixture
+def sample_devs(db_session):
     """create sample devs for testing based on given code challenge"""
     hildah = Dev(name="Hildah")
     ayim = Dev(name="Ayim")
@@ -31,7 +41,8 @@ def sample_devs(db_sesion):
 @pytest.fixture
 def sample_freebies(db_session, sample_companies, sample_devs):
     """Create sample freebies"""
-    freebie1 = 
-    freebie2 = 
-    freebie3 =
-    freebie4 = 
+    freebie1 = Freebie(iten_name="T-shirt", value=25, dev=sample_devs["hildah"], company=sample_companies["google"])
+    freebie2 = Freebie(iten_name="T-shirt", value=25, dev=sample_devs["hildah"], company=sample_companies["google"])
+    freebie3 = Freebie(iten_name="T-shirt", value=25, dev=sample_devs["hildah"], company=sample_companies["google"])
+    freebie4 = Freebie(iten_name="T-shirt", value=25, dev=sample_devs["hildah"], company=sample_companies["google"])
+    
