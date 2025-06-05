@@ -3,9 +3,15 @@ import sys
 import os 
 # sys.path.append(os.path.join(os.path.dirname(__file__), '..' 'app'))
 
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_root)
+
+app_dir = os.path.join(project_root, 'app')
+sys.path.insert(0, app_dir)
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.models import Base, Company, Dev, Freebie
+from models import Base, Company, Dev, Freebie
 
 @pytest.fixture(scope="function")
 def db_session():
@@ -41,10 +47,10 @@ def sample_devs(db_session):
 @pytest.fixture
 def sample_freebies(db_session, sample_companies, sample_devs):
     """Create sample freebies"""
-    freebie1 = Freebie(iten_name="T-shirt", value=25, dev=sample_devs["hildah"], company=sample_companies["google"])
-    freebie2 = Freebie(iten_name="Stickers", value=5, dev=sample_devs["hildah"], company=sample_companies["google"])
-    freebie3 = Freebie(iten_name="Mug", value=15, dev=sample_devs["ayim"], company=sample_companies["facebook"])
-    freebie4 = Freebie(iten_name="T-shirt", value=30, dev=sample_devs["koba"], company=sample_companies["apple"])
+    freebie1 = Freebie(item_name="T-shirt", value=25, dev=sample_devs["hildah"], company=sample_companies["google"])
+    freebie2 = Freebie(item_name="Stickers", value=5, dev=sample_devs["hildah"], company=sample_companies["google"])
+    freebie3 = Freebie(item_name="Mug", value=15, dev=sample_devs["ayim"], company=sample_companies["facebook"])
+    freebie4 = Freebie(item_name="T-shirt", value=30, dev=sample_devs["koba"], company=sample_companies["apple"])
     db_session.add_all([freebie1, freebie2, freebie3, freebie4])
     db_session.commit()
     return{"hildah_tshirt": freebie1, "hildah_stickers": freebie2, "ayim_mug": freebie3, "koba_tshirt": freebie4}

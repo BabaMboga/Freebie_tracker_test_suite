@@ -85,9 +85,10 @@ class TestAggregateMethodDelivaries:
         assert new_freebie.company == google
         assert len(google.freebies) == initial_count + 1
 
-    def test_company_oldest_company(self, sample_companies):
+    def test_company_oldest_company(self, db_session, sample_companies):
+        from models import Company
         """Company.oldest_company returns oldest company"""
-        oldest = Company.oldest_company()
+        oldest = Company.oldest_company(db_session)
         assert oldest.name == "Apple"
         assert oldest.founding_year == 1976
 
