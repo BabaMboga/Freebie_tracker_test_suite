@@ -54,6 +54,67 @@ class TestRelationshipDeliverables:
         assert hasattr(hildah, 'freebies')
 
     def test_dev_companies_relationship(self, sample_freebies, sample_devs):
-        pass
+        """ dev.companies returns collection of companies"""
+        hildah = sample_devs["hildah"]
+        assert len(hildah.companies) == 2
+        company_names = [c.name for c in hildah.companies]
+        assert "Goodle" in company_names and "Facebook" in company_names
+
+@pytest.mark.deliverable
+class TestAggregateMethodDelivaries:
+    """Aggregate method test"""
+
+    def test_freevie_print_details(safe, sample_freebies):
+        """Freebie.print_details() returns formatted string"""
+        freebie = sample_freebies["hildah_tshirt"]
+        expected =  "Hildah owns a T-shirt from Google."
+        assert freebie.print_details() == expected
+
+    def test_compaby_give_freebie(self, db_session, sample_companies, sample_devs):
+        """Company.give_freebie() creates new freebie"""
+        google = sample_companies["google"]
+        hildah = sample_devs["hildah"]
+        initial_count = len(google.freebies)
+
+        new_freebie = google.give_freebie(hildah, "Notebook", 10)
+        db_session.commit()
+
+        assert new_freebie.item_name == "Notebook"
+        assert new_freebie.value == 10
+        assert new_freebie.dev == hildah
+        assert new_freebie.company == google
+        assert len(google.freebies) == initial_count + 1
+
+    def test_company_oldest_company(self, sample_companies):
+        """Company.oldest_company returns oldest company"""
+        oldest = Company.oldest_company()
+        assert oldest.name == "Apple"
+        assert oldest.founding_year == 1976
+
+    def test_dev_received_one_true(self, sample_freebies,sample_devs):
+        """Dev.received_one() returns true when item exists"""
+        hildah = sample_devs["hildah"]
+        assert hildah.received_one("T-shirt") is True
+
+    def test_dev_received_one_false(self, sample_freebies, sample_devs):
+        """Dev.received_one() returns false when item does not exist"""
+        hildah = sample_devs["hildah"]
+        assert hildah.received_one("Laptop") is False
+
+    def test_dev_give_away_valid(self,db_session, sample_freebies, sample_devs):
+        """Dev.give_away() transfers freebie when valid"""
+        hildah = sample_devs["hildah"]
+        ayim = sample_devs["ayim"]
+        freebie = sample_freebies["hildah_tshirt"]
+
+        hildah.give_away(ayim, freebie)
+        db_session.commit()
+
+        assert freebie.dev == ayim
+        assert freebie in ayim.freebies
+        assert freebie not in hildah.freebies
+
+
+        
 
     
