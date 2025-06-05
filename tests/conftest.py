@@ -1,11 +1,11 @@
 import pytest
 import sys
 import os 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..' 'app'))
+# sys.path.append(os.path.join(os.path.dirname(__file__), '..' 'app'))
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, Company, Dev, Freebie
+from app.models import Base, Company, Dev, Freebie
 
 @pytest.fixture(scope="function")
 def db_session():
